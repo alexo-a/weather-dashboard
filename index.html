@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+</head>
+
+<body>
+    <header>
+        <h1 class="text-center text-white bg-dark mx-auto py-4">Weather Dashboard</h1>
+    </header>
+    <main class="row">
+        <div class="col-3 bg-light">
+            <!-- "search" section -->
+            <h3>Search for a city:</h3>
+            <div class="list-group">
+                <a href="#" class="list-group-item list-group-item-action">City 1</a>
+                <a href="#" class="list-group-item list-group-item-action">City 2</a>
+                <a href="#" class="list-group-item list-group-item-action">City 3</a>
+                <a href="#" class="list-group-item list-group-item-action">City 4</a>
+                <a href="#" class="list-group-item list-group-item-action">City 5</a>
+            </div>
+
+        </div>
+        <div id="city-main" class="col-9">
+            <div class="p-4 m-2 border border-secondary">
+                <!-- city current info -->
+                <h2>City</h2>
+                <img src="">
+                <br>
+                <p>Temperature: </p>
+                <p>Humidity: </p>
+                <p>Wind Speed: </p>
+                <p>UV Index: </p>
+            </div>
+            <div class="column m-1">
+                <!-- 5-day forecast -->
+                <h3>5-Day Forecast:</h3>
+                <div class="row d-flex justify-content-around m-1">
+
+                    <div class="card" id="day-1" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Date1</h4>
+                            <p>icon</p>
+                            <p class="card-text">Temp:</p>
+                            <p class="card-text">Humidity:</p>
+                        </div>
+                    </div>
+                    <div class="card" id="day-2" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Date2</h4>
+                            <p>icon</p>
+                            <p class="card-text">Temp:</p>
+                            <p class="card-text">Humidity:</p>
+                        </div>
+                    </div>
+                    <div class="card" id="day-3" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Date3</h4>
+                            <p>icon</p>
+                            <p class="card-text">Temp:</p>
+                            <p class="card-text">Humidity:</p>
+                        </div>
+                    </div>
+                    <div class="card" id="day-4" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Date4</h4>
+                            <p>icon</p>
+                            <p class="card-text">Temp:</p>
+                            <p class="card-text">Humidity:</p>
+                        </div>
+                    </div>
+                    <div class="card" id="day-5" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Date5</h4>
+                            <p>icon</p>
+                            <p class="card-text">Temp:</p>
+                            <p class="card-text">Humidity:</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
+    </main>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="assets/js/script.js"></script>
+</body>
+
+</html>
