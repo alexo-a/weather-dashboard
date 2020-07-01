@@ -37,8 +37,16 @@ var getWeather = function (lat,long) {
 };
 
 var updateForecast = function(weatherobj){
-
-    
+    var icondaily;
+    for (var i = 1; i < 6; i++){
+        with (jQuery("#day-" + i.toString() + " div")){
+            children("h5").text(weatherobj.daily[i-1].dt);
+            icondaily = weatherobj.daily[i - 1].weather[0].icon;
+            children("img").attr("src", "http://openweathermap.org/img/wn/" + icondaily + "@2x.png")
+            children("p").children(".forecast-temp").text(weatherobj.daily[i - 1].temp.max + "°");
+            children("p").children(".forecast-humidity").text(weatherobj.daily[i - 1].humidity + "%");
+        }
+    }
 }
 
 var updateInfo = function(weatherobj, index){
