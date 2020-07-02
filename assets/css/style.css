@@ -17,3 +17,12 @@
     padding: 5px;
     border-radius: 1px;
 }
+
+#card {
+     width: 18rem;
+}
+
+#plot {
+    height: 400px;
+    z-index: -1;
+}

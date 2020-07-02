@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
 
@@ -18,6 +18,14 @@
     </header>
     <main class="row">
         <div class="col-3 bg-light">
+            <div class="btn-group btn-group-toggle" data-toggle="buttons" id="unitSelector">
+                <label class="btn btn-secondary active" id="f">
+                    <input type="radio" name="tempUnit" autocomplete="off" checked> °F
+                </label>
+                <label class="btn btn-secondary" id="c" >
+                    <input type="radio" name="tempUnit" autocomplete="off"> °C
+                </label>
+            </div>
             <!-- "search" section -->
             <h3>Search for a city:</h3>
             <div id="city-list" class="list-group">
@@ -33,22 +41,28 @@
 
         </div>
         <div id="city-main" class="col-9">
-            <div class="p-4 m-2 border border-secondary">
-                <!-- city current info -->
-                <h2 id="city-name">City</h2>
-                <img id="current-icon" src="">
-                <br>
-                <p>Temperature: <span id="current-temperature"></span></p>
-                <p>Humidity: <span id="current-humidity"></span></p>
-                <p>Wind Speed: <span id="current-windspeed"></span></p>
-                <p>UV Index: <span class="badge" id="current-uvindex"></span></p>
+            <div class="p-4 m-2 border border-secondary row">
+                <div class="col-4"> <!-- Left side of box -->
+                    <!-- city current info -->
+                    <h2 id="city-name">City</h2>
+                    <img id="current-icon" src="">
+                    <br>
+                    <p>Temperature: <span id="current-temperature"></span></p>
+                    <p>Humidity: <span id="current-humidity"></span></p>
+                    <p>Wind Speed: <span id="current-windspeed"></span></p>
+                    <p>UV Index: <span class="badge" id="current-uvindex"></span></p>
+                </div>
+                <div class="col-8" id="plot">
+
+
+                </div>
             </div>
             <div class="column m-1">
                 <!-- 5-day forecast -->
                 <h3>5-Day Forecast:</h3>
                 <div id="forecast-area" class="row d-flex justify-content-around m-1">
 
-                    <div class="card" id="day-1" style="width: 18rem;">
+                    <div class="card" id="day-1">
                         <div class="card-body">
                             <h5 class="card-title"></h5>
                             <img src="">
@@ -56,7 +70,7 @@
                             <p class="card-text">Humidity: <span class="forecast-temp"></span></p>
                         </div>
                     </div>
-                    <div class="card" id="day-2" style="width: 18rem;">
+                    <div class="card" id="day-2">
                         <div class="card-body">
                             <h5 class="card-title"></h5>
                             <img src="">
@@ -64,7 +78,15 @@
                             <p class="card-text">Humidity: <span class="forecast-temp"></span></p>
                         </div>
                     </div>
-                    <div class="card" id="day-3" style="width: 18rem;">
+                    <div class="card" id="day-3">
+                        <div class="card-body p-1">
+                            <h5 class="card-title"></h5>
+                            <img src="">
+                            <p class="card-text">Temp: <span class="forecast-temp"></span></p>
+                            <p class="card-text">Humidity: <span class="forecast-temp"></span></p>
+                        </div>
+                    </div>
+                    <div class="card" id="day-4">
                         <div class="card-body">
                             <h5 class="card-title"></h5>
                             <img src="">
@@ -72,15 +94,7 @@
                             <p class="card-text">Humidity: <span class="forecast-temp"></span></p>
                         </div>
                     </div>
-                    <div class="card" id="day-4" style="width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title"></h5>
-                            <img src="">
-                            <p class="card-text">Temp: <span class="forecast-temp"></span></p>
-                            <p class="card-text">Humidity: <span class="forecast-temp"></span></p>
-                        </div>
-                    </div>
-                    <div class="card" id="day-5" style="width: 18rem;">
+                    <div class="card" id="day-5">
                         <div class="card-body">
                             <h5 class="card-title"></h5>
                             <img src="">
@@ -99,7 +113,7 @@
 
     </main>
 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>

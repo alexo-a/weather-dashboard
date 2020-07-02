@@ -1,4 +1,5 @@
 const key = "081b7a37835c16051ff41b4219746af8";
+var refreshTime;
 const cityBtnCoords = [
     {coords: ["33.7490", "-84.3880"],
         city:"Atlanta"},
@@ -20,17 +21,53 @@ const cityBtnCoords = [
 
 var weatherInfo = "";
 
-
 $.noConflict();
-var getWeather = function (lat,long) {
-    // format the github api url
-    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + long + "&exclude=hourly,daily&appid=" + key ;
 
+//check localStorage for "tempUnit" and set to "F" if blank
+
+
+jQuery("#unitSelector").on("click", function(event){
+    console.log(event.target.id)//jQuery(this).attr("id"))
+
+})
+
+var updateGraph = function (weatherobj){
+    var plot = jQuery("#plot");
+    var xVals = [];
+    var yVals = [];
+    for (var i = 0; i < 6; i++){
+        xVals.push(moment.unix(weatherobj.hourly[i].dt).format("ha"));
+        yVals.push(weatherobj.hourly[i].temp)
+    }
+    console.log(xVals, yVals);
+    var plot1 = {x: xVals, y: yVals, type:"scatter"}
+    var data = [plot1]
+    var layout = {
+        title: 'Next 6 Hours',
+        xaxis: {
+            title: 'Hour',
+            showgrid: false,
+            zeroline: false
+        },
+        yaxis: {
+            title: 'Temperature (°F)',
+            showline: true
+        },
+        font: {
+            
+            
+            color: 'rgb(52,58,64)'
+        }
+    };
+    Plotly.newPlot("plot", data, layout, { displayModeBar: false, responsive: true });
+}
+
+var getWeather = function (lat,long) {
+    // format the weather api url
+    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + long + "&exclude=hourly,daily&appid=" + key ;
     // make a request to the url
     fetch(apiUrl).then(function (response) {
-        response.json().then(function (data) {
-            //console.log(data);
-            
+        response.json().then(function (data) {            
             return data;
         });
     });
@@ -40,11 +77,12 @@ var updateForecast = function(weatherobj){
     var icondaily;
     for (var i = 1; i < 6; i++){
         with (jQuery("#day-" + i.toString() + " div")){
-            children("h5").text(weatherobj.daily[i-1].dt);
+            children("h5").text(moment.unix(weatherobj.daily[i-1].dt).format("MM/DD/YYYY"));
             icondaily = weatherobj.daily[i - 1].weather[0].icon;
             children("img").attr("src", "http://openweathermap.org/img/wn/" + icondaily + "@2x.png")
             children("p").children(".forecast-temp").text(weatherobj.daily[i - 1].temp.max + "°");
             children("p").children(".forecast-humidity").text(weatherobj.daily[i - 1].humidity + "%");
+
         }
     }
 }
@@ -52,6 +90,7 @@ var updateForecast = function(weatherobj){
 var updateInfo = function(weatherobj, index){
     //update city name in #city-name
     //change cityBtnCoords[index].city to whatever comes from google maps api?
+    refreshTime = moment();
     jQuery("#city-name").text(cityBtnCoords[index].city);
 
     var icon = weatherobj.current.weather[0].icon;
@@ -82,7 +121,7 @@ var updateInfo = function(weatherobj, index){
     }   
 
     updateForecast(weatherobj);
-
+    updateGraph(weatherobj);
 };
 
 jQuery("#city-list a").on("click", function(){
@@ -90,7 +129,7 @@ jQuery("#city-list a").on("click", function(){
     var lat = cityBtnCoords[index].coords[0]
     var long = cityBtnCoords[index].coords[1] 
     var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" 
-        + long + "&exclude=hourly,minutely&appid=" + key + "&units=imperial";
+        + long + "&exclude=minutely&appid=" + key + "&units=imperial";
 
     // make a request to the url
     fetch(apiUrl).then(function (response) {
@@ -102,5 +141,5 @@ jQuery("#city-list a").on("click", function(){
             updateInfo(data, index);
         });
     });
-    console.dir(weatherInfo);
+    //console.dir(weatherInfo);
 });
