@@ -23,12 +23,16 @@ var weatherInfo = "";
 
 $.noConflict();
 
-//check localStorage for "tempUnit" and set to "F" if blank
-
+//check localStorage for "tempUnit" and set to "F" if null
+var tempUnit = localStorage.getItem("tempUnit");
+if (tempUnit === null ){
+    tempUnit = "f";
+    localStorage.setItem("tempUnit", "f");
+}
 
 jQuery("#unitSelector").on("click", function(event){
-    console.log(event.target.id)//jQuery(this).attr("id"))
-
+    tempUnit = event.target.id;
+    localStorage.setItem("tempUnit", tempUnit);
 })
 
 var updateGraph = function (weatherobj){
@@ -54,8 +58,7 @@ var updateGraph = function (weatherobj){
             showline: true
         },
         font: {
-            
-            
+            //match BS "dark" color
             color: 'rgb(52,58,64)'
         }
     };
