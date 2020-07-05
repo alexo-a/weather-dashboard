@@ -18,7 +18,7 @@
     </header>
     <main class="row">
         <div class="col-3 bg-light">
-            <div class="btn-group btn-group-toggle" data-toggle="buttons" id="unitSelector">
+            <div class="btn-group btn-group-toggle m-2" data-toggle="buttons" id="unitSelector">
                 <label class="btn btn-secondary active" id="f">
                     <input type="radio" name="tempUnit" autocomplete="off" checked> °F
                 </label>
@@ -28,6 +28,17 @@
             </div>
             <!-- "search" section -->
             <h3>Search for a city:</h3>
+            <form class="input-group mb-3 mx-1" id="searchInput">
+
+
+                <input type="text" class="form-control" placeholder="City" aria-label="City"
+                    aria-describedby="basic-addon1">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <div id="failedmessage" class="bg-danger p-3 m-2 d-none">
+                That didn't work. Try a new city name. Don't use commas or state/countries, that feature is coming soon!
+            </div>
+
             <div id="city-list" class="list-group">
                 <a id="0" href="#" class="list-group-item list-group-item-action">Atlanta</a>
                 <a id="1" href="#" class="list-group-item list-group-item-action">Austin</a>
@@ -63,7 +74,7 @@
                 <div id="forecast-area" class="row d-flex justify-content-around m-1">
 
                     <div class="card" id="day-1">
-                        <div class="card-body">
+                        <div class="card-body p-1">
                             <h5 class="card-title"></h5>
                             <img src="">
                             <p class="card-text">Temp: <span class="forecast-temp"></span></p>
@@ -71,7 +82,7 @@
                         </div>
                     </div>
                     <div class="card" id="day-2">
-                        <div class="card-body">
+                        <div class="card-body p-1">
                             <h5 class="card-title"></h5>
                             <img src="">
                             <p class="card-text">Temp: <span class="forecast-temp"></span></p>
@@ -87,7 +98,7 @@
                         </div>
                     </div>
                     <div class="card" id="day-4">
-                        <div class="card-body">
+                        <div class="card-body p-1">
                             <h5 class="card-title"></h5>
                             <img src="">
                             <p class="card-text">Temp: <span class="forecast-temp"></span></p>
@@ -95,7 +106,7 @@
                         </div>
                     </div>
                     <div class="card" id="day-5">
-                        <div class="card-body">
+                        <div class="card-body p-1">
                             <h5 class="card-title"></h5>
                             <img src="">
                             <p class="card-text">Temp: <span class="forecast-temp"></span></p>
