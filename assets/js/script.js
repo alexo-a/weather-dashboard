@@ -23,11 +23,17 @@ var weatherInfo = "";
 
 $.noConflict();
 
+ 
+
 //check localStorage for "tempUnit" and set to "F" if null
 var tempUnit = localStorage.getItem("tempUnit");
 if (tempUnit === null ){
     tempUnit = "f";
     localStorage.setItem("tempUnit", "f");
+}
+else if (tempUnit === "c"){
+    jQuery("#f").removeClass("active");
+    jQuery("#c").addClass("active");
 }
 
 jQuery("#unitSelector").on("click", function(event){
@@ -92,9 +98,16 @@ var updateForecast = function(weatherobj){
 
 var updateInfo = function(weatherobj, index){
     //update city name in #city-name
-    //change cityBtnCoords[index].city to whatever comes from google maps api?
     refreshTime = moment();
-    jQuery("#city-name").text(cityBtnCoords[index].city);
+    if (Number.isInteger(index)){
+        console.log("index is integer")
+        jQuery("#city-name").text(cityBtnCoords[index].city + moment.unix(weatherobj.current.dt).format(" (MM/DD/YYYY)"));
+    }
+    else { 
+        console.log("index is empty");
+        console.dir(weatherobj)
+        jQuery("#city-name").text(index + moment.unix(weatherobj.current.dt).format(" (MM/DD/YYYY)"));
+    }
 
     var icon = weatherobj.current.weather[0].icon;
     //update icon src
@@ -127,6 +140,38 @@ var updateInfo = function(weatherobj, index){
     updateGraph(weatherobj);
 };
 
+var getWeatherFromCityName = function(cityState) {
+
+    var unit = (tempUnit === "f") ? "imperial" : "metric"
+    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityState +  "&exclude=minutely&appid=" + key + "&units=" + unit;
+    // make a request to the url
+    fetch(apiUrl).then(function (response) {
+        response.json().then(function (data) {
+
+            if (data.cod === "404") {
+                //didn't work
+                jQuery("#failedmessage").removeClass("d-none")
+            }
+            else {
+                //worked, hide failure message
+                jQuery("#failedmessage").addClass("d-none")
+                var cityName = data.name;
+                var lat = data.coord.lat;
+                var long = data.coord.lon;
+                apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon="
+                    + long + "&exclude=minutely&appid=" + key + "&units=" + unit;
+                
+                fetch(apiUrl).then(function (response) {
+                    response.json().then(function (data) {
+                        updateInfo(data, cityName);
+                    })
+                });
+            };
+        });
+    });
+}
+
+
 jQuery("#city-list a").on("click", function(){
     var index = parseInt(jQuery(this).attr("id"));
     var lat = cityBtnCoords[index].coords[0]
@@ -137,12 +182,29 @@ jQuery("#city-list a").on("click", function(){
     // make a request to the url
     fetch(apiUrl).then(function (response) {
         response.json().then(function (data) {
-            //console.log(data);
-
-            //weatherInfo =  data;
             console.dir(data);
             updateInfo(data, index);
         });
     });
-    //console.dir(weatherInfo);
 });
+jQuery("#searchInput").on("submit", function(){
+    event.preventDefault();
+    var city = jQuery(this).children()[0].value.trim();
+    var citystatestring;
+    if (city.indexOf(",") != -1){
+        var citystatearry = city.split(",");
+        citystatestring = citystatearry.join(",");
+    }
+    else {citystatestring=city}
+    console.log(citystatestring)
+    getWeatherFromCityName(citystatestring);
+})
+
+
+var defaultCity = localStorage.getItem("defaultCity");
+if (defaultCity === null) {
+    localStorage.setItem("defaultCity", "Atlanta");
+}
+else {
+    getWeatherFromCityName(defaultCity);
+}
