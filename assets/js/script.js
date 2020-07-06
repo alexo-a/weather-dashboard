@@ -111,17 +111,6 @@ var updateGraph = function (weatherobj) {
     Plotly.newPlot("plot", data, layout, { displayModeBar: false, responsive: true });
 }
 
-var getWeather = function (lat,long) {
-    // format the weather api url
-    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + long + "&exclude=hourly,daily&appid=" + key ;
-    // make a request to the url
-    fetch(apiUrl).then(function (response) {
-        response.json().then(function (data) {            
-            return data;
-        });
-    });
-};
-
 var updateForecast = function(weatherobj){
     var icondaily;
     for (var i = 1; i < 6; i++){
@@ -129,8 +118,8 @@ var updateForecast = function(weatherobj){
             children("h5").text(moment.unix(weatherobj.daily[i-1].dt).format("MM/DD/YYYY"));
             icondaily = weatherobj.daily[i - 1].weather[0].icon;
             children("img").attr("src", "http://openweathermap.org/img/wn/" + icondaily + "@2x.png")
-            children("p").children(".forecast-temp").text(weatherobj.daily[i - 1].temp.max + "°");
-            children("p").children(".forecast-humidity").text(weatherobj.daily[i - 1].humidity + "%");
+            children("p").children(".forecast-temp").text(Math.round(weatherobj.daily[i - 1].temp.max) + "°");
+            children("p").children(".forecast-humidity").text(Math.round(weatherobj.daily[i - 1].humidity) + "%");
 
         }
     }
@@ -154,15 +143,15 @@ var updateInfo = function(weatherobj, index){
     jQuery("#current-icon").attr("src", "http://openweathermap.org/img/wn/" + icon + "@2x.png")
 
     //update current temperature
-    jQuery("#current-temperature").text(weatherobj.current.temp 
-        + "° (Feels Like " + weatherobj.current.feels_like + "°)");
+    jQuery("#current-temperature").text(Math.round(weatherobj.current.temp) 
+        + "° (Feels Like " + Math.round(weatherobj.current.feels_like) + "°)");
 
     //update current humidity
-    jQuery("#current-humidity").text(weatherobj.current.humidity + "%");
+    jQuery("#current-humidity").text(Math.round(weatherobj.current.humidity) + "%");
     //add image for wind direction?
 
     //update current wind speed
-    jQuery("#current-windspeed").text(weatherobj.current.wind_speed + "mph");
+    jQuery("#current-windspeed").text(Math.round(weatherobj.current.wind_speed) + "mph");
     
     //update current UV index
     with (jQuery("#current-uvindex")){
@@ -216,8 +205,9 @@ jQuery("#city-list a").on("click", function(){
     var index = parseInt(jQuery(this).attr("id"));
     var lat = cityBtnCoords[index].coords[0]
     var long = cityBtnCoords[index].coords[1] 
+    var unit = (tempUnit === "f") ? "imperial" : "metric"
     var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" 
-        + long + "&exclude=minutely&appid=" + key + "&units=imperial";
+        + long + "&exclude=minutely&appid=" + key + "&units=" + unit;
 
     // make a request to the url
     fetch(apiUrl).then(function (response) {
