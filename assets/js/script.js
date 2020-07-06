@@ -41,31 +41,71 @@ jQuery("#unitSelector").on("click", function(event){
     localStorage.setItem("tempUnit", tempUnit);
 })
 
-var updateGraph = function (weatherobj){
+var updateGraph = function (weatherobj) {
     var plot = jQuery("#plot");
     var xVals = [];
-    var yVals = [];
-    for (var i = 0; i < 6; i++){
-        xVals.push(moment.unix(weatherobj.hourly[i].dt).format("ha"));
-        yVals.push(weatherobj.hourly[i].temp)
+    var yTempVals = [];
+    var yHumidityVals = [];
+    for (var i = 0; i < 6; i++) {
+        xVals.push(moment.unix(weatherobj.hourly[i].dt).format("M-D ha"));
+        yTempVals.push(weatherobj.hourly[i].temp)
+        yHumidityVals.push(weatherobj.hourly[i].humidity)
     }
-    console.log(xVals, yVals);
-    var plot1 = {x: xVals, y: yVals, type:"scatter"}
-    var data = [plot1]
+    var plotTemp = {
+        x: xVals,
+        y: yTempVals,
+        type: "scatter",
+        marker: {
+            color: 'rgb(228, 105, 105)',
+            size: 5,
+            line: {
+                color: 'rgb(228, 105, 105)',
+                width: 2
+            }
+        }
+    }
+    var plotHumidity = {
+        x: xVals,
+        y: yHumidityVals,
+        yaxis: 'y2',
+        type: "scatter",
+        marker: {
+            color: 'rgb(34, 118, 176)',
+            size: 5,
+            line: {
+                color: 'rgb(34, 118, 176)',
+                width: 2
+            }
+        }
+    }
+    var data = [plotTemp, plotHumidity]
     var layout = {
         title: 'Next 6 Hours',
+        showlegend: false,
         xaxis: {
             title: 'Hour',
             showgrid: false,
-            zeroline: false
+            zeroline: false,
+            tickangle: 45
         },
         yaxis: {
-            title: 'Temperature (°F)',
-            showline: true
+            title: 'Temperature (°' + tempUnit.toUpperCase() + ')',
+            showline: true,
+            titlefont: { color: 'rgb(228, 105, 105)' },
+
+            tickfont: { color: 'rgb(228, 105, 105)' }
         },
         font: {
             //match BS "dark" color
             color: 'rgb(52,58,64)'
+        },
+        yaxis2: {
+            title: 'Relative Humidity (%)',
+            titlefont: { color: 'rgb(34, 118, 176)' },
+            tickfont: { color: 'rgb(34, 118, 176)' },
+            overlaying: 'y',
+            side: 'right',
+            range: [0, 100]
         }
     };
     Plotly.newPlot("plot", data, layout, { displayModeBar: false, responsive: true });
